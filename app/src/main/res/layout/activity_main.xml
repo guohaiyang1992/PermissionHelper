@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/test1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="方式1" />
+
+    <Button
+        android:id="@+id/test2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="方式2" />
+
+    <Button
+        android:id="@+id/test3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="方式3" />
+</LinearLayout>
