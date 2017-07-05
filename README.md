@@ -38,6 +38,7 @@ PermissionHelper.with(Test1Activity.this/**此处不同*/).permissions(Manifest.
     }
 ```
 
+---
 
  - fragement申请权限 fragement处理
  
@@ -62,16 +63,20 @@ PermissionHelper.with(Test1Fragement.this/**此处不同*/).permissions(Manifest
     }
 ```
 
+---
+
  - 特殊技能：
 	- 1） fragement 使用activity的方式申请权限，只需修改两处，参照`fragement`的写法，首先将`fragement`修改为`getActivity()`，然后参照 `activity`的写法，重写`onRequestPermissionsResult` 即可
 
 	- 2）任何类都可申请权限，也是需要注意三点：首先按照传入activity/fragement进行申请权限，然后根据 不同的传入对象，重写不同对象的对应的`onRequestPermissionsResult` 即可，最后需要注意的是，此处需要特殊设置申请时的方法，代码如下：
 
-     ```
+```
 PermissionHelper.with(Test3Activity.this).requestCode(100).permissions(Manifest.permission.CALL_PHONE).lisener(fragement).hintMessage("缺少必须权限，不开启无法使用哦").request(); 
-     ```
+```
 
 注意上方的`lisener（）`,此处传递你需要监听的类的实例即可。 三步缺一不可。
+
+---
 
  - 关键：
  说了这么多还没说，怎么回调成功或者失败呢？下面讲解如何设置成功或者失败的方法，代码如下：
@@ -94,6 +99,8 @@ PermissionHelper.with(Test3Activity.this).requestCode(100).permissions(Manifest.
 这时候你或许会问，假设我好多类都这样写了，你怎么知道回调哪个类的？
 
 **回调的原则是这样的，当你不设置`lisener`的时候，默认谁请求谁处理，也就是回调对应`activity/fragement`的对应注解方法，如果设置了，以`lisener()`方法设置的为准。**
+
+---
 
  - 方法详解
 
