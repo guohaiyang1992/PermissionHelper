@@ -8,17 +8,23 @@
         android:id="@+id/test1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="方式1" />
+        android:text="activity 下请求权限" />
 
     <Button
         android:id="@+id/test2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="方式2" />
+        android:text="fragement下请求权限" />
 
     <Button
         android:id="@+id/test3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="方式3" />
+        android:text="v4 fragement下申请权限" />
+
+    <Button
+        android:id="@+id/test4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义view或者其他下申请权限" />
 </LinearLayout>

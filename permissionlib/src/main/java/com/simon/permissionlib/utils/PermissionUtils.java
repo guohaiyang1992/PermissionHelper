@@ -20,7 +20,7 @@ import java.util.List;
  * created at 2017/7/4 下午7:03
  */
 
-public class Utils {
+public class PermissionUtils {
     /**
      * 当前版本大于等于 6.0则需要请求运行时权限，反之不需要
      *
@@ -97,5 +97,11 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    public static void checkNull(Object object, String msg) {
+        if (object == null) {
+            throw new NullPointerException(msg);
+        }
     }
 }

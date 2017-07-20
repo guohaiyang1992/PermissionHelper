@@ -12,51 +12,56 @@ import com.simon.permissionlib.annotation.PermissionFail;
 import com.simon.permissionlib.annotation.PermissionSuccess;
 import com.simon.permissionlib.core.PermissionHelper;
 
-/**
- * Created by guohaiyang on 2017/7/4.
- */
 
+/**
+ * description:  测试activity内请求权限
+ * author: Simon
+ * created at 2017/7/20 下午3:51
+ */
 public class Test1Activity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test1);
+        setContentView(R.layout.activity_test_activity);
         findViewById(R.id.call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PermissionHelper.requestPermissions(Test1Activity.this, 100, new String[]{Manifest.permission.CALL_PHONE});
+                //请求电话权限
+                PermissionHelper.with(Test1Activity.this)
+                        .permissions(Manifest.permission.CALL_PHONE,
+                                Manifest.permission.SEND_SMS)
+                        .requestCode(100)
+                        .lisener(Test1Activity.this)
+                        .request();
             }
         });
         findViewById(R.id.sms).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PermissionHelper.requestPermissions(Test1Activity.this, 200, new String[]{Manifest.permission.SEND_SMS});
+                //请求短信权限
+                PermissionHelper.with(Test1Activity.this).permissions(Manifest.permission.SEND_SMS).requestCode(200).lisener(Test1Activity.this).request();
             }
         });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionHelper.onRequestPermissionsResult(Test1Activity.this, requestCode, permissions, grantResults);
-    }
 
     @PermissionSuccess(requestCode = 100)
     public void onSucess() {
-        Toast.makeText(Test1Activity.this, "Test2Activity:电话成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Test1Activity.this, "电话成功", Toast.LENGTH_SHORT).show();
     }
 
     @PermissionFail(requestCode = 100)
     public void onFail() {
-        Toast.makeText(Test1Activity.this, "Test2Activity:电话失败", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Test1Activity.this, "电话失败", Toast.LENGTH_SHORT).show();
     }
 
     @PermissionSuccess(requestCode = 200)
     public void onSucessSMS() {
-        Toast.makeText(Test1Activity.this, "Test2Activity:短信成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Test1Activity.this, "短信成功", Toast.LENGTH_SHORT).show();
     }
 
     @PermissionFail(requestCode = 200)
     public void onFailSMS() {
-        Toast.makeText(Test1Activity.this, "Test2Activity:短信失败", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Test1Activity.this, "短信失败", Toast.LENGTH_SHORT).show();
     }
 }

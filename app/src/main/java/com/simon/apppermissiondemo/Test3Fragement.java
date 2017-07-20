@@ -1,9 +1,9 @@
 package com.simon.apppermissiondemo;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +14,12 @@ import com.simon.permissionlib.annotation.PermissionSuccess;
 import com.simon.permissionlib.core.PermissionHelper;
 
 /**
- * description:  用于测试的 非v4下的fragement
- * 使用了两种不同的调用环境但监听都是自己即可，不需要在意调用环境
+ * description:  测试 v4 下fragement
  * author: Simon
- * created at 2017/7/20 下午4:02
+ * created at 2017/7/20 下午4:10
  */
 
-public class Test2Fragement extends Fragment {
+public class Test3Fragement extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class Test2Fragement extends Fragment {
             public void onClick(View v) {
                 //请求电话权限
                 //****-----此处使用的是fragement自己调用的，注意lisener 是自己-----****
-                PermissionHelper.with(Test2Fragement.this).permissions(Manifest.permission.CALL_PHONE).requestCode(100).lisener(Test2Fragement.this).request();
+                PermissionHelper.with(Test3Fragement.this).permissions(Manifest.permission.CALL_PHONE).requestCode(100).lisener(Test3Fragement.this).request();
             }
         });
         view.findViewById(R.id.sms).setOnClickListener(new View.OnClickListener() {
@@ -39,7 +38,7 @@ public class Test2Fragement extends Fragment {
             public void onClick(View v) {
                 //请求短信权限
                 //****-----此处使用的是fragement的activity调用的，注意lisener 是自己-----****
-                PermissionHelper.with(getActivity()).permissions(Manifest.permission.SEND_SMS).requestCode(200).lisener(Test2Fragement.this).request();
+                PermissionHelper.with(getActivity()).permissions(Manifest.permission.SEND_SMS).requestCode(200).lisener(Test3Fragement.this).request();
             }
         });
         return view;
