@@ -17,7 +17,7 @@
 
 ```java
 //请求电话权限
-                PermissionHelper.with(Test1Activity.this)
+ PermissionHelper.with(Test1Activity.this)
                         .permissions(Manifest.permission.CALL_PHONE)
                         .requestCode(100)
                         .lisener(Test1Activity.this)
