@@ -1,7 +1,7 @@
 
 
 
-# PermissionHelper
+# PermissionHelper (v1.1)
 ## 简单高效的android 动态权限申请库（特点：苦口婆心式引导）
 ---
 功能：
