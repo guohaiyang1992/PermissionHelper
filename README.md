@@ -17,7 +17,7 @@
 
 ```java
 //请求电话权限
- PermissionHelper.with(Test1Activity.this)
+        PermissionHelper.with(Test1Activity.this)
                         .permissions(Manifest.permission.CALL_PHONE)
                         .requestCode(100)
                         .lisener(Test1Activity.this)
@@ -32,7 +32,7 @@
 ```java
 
 //此处的with可以传入 activity或者fragement ，但lisener 必须传入自己 
-               PermissionHelper.with(Test2Fragement.this).permissions(Manifest.permission.CALL_PHONE).requestCode(100).lisener(Test2Fragement.this).request();
+     PermissionHelper.with(Test2Fragement.this).permissions(Manifest.permission.CALL_PHONE).requestCode(100).lisener(Test2Fragement.this).request();
 
 
 //申请权限方式2
