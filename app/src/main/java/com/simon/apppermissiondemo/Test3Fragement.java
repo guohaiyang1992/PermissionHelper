@@ -39,6 +39,7 @@ public class Test3Fragement extends Fragment {
                 //请求短信权限
                 //****-----此处使用的是fragement的activity调用的，注意lisener 是自己-----****
                 PermissionHelper.with(getActivity()).permissions(Manifest.permission.SEND_SMS).requestCode(200).lisener(Test3Fragement.this).request();
+
             }
         });
         return view;

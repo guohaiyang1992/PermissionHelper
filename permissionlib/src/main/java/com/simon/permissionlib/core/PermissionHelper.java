@@ -1,6 +1,5 @@
 package com.simon.permissionlib.core;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -9,11 +8,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.simon.permissionlib.R;
 import com.simon.permissionlib.annotation.PermissionFail;
 import com.simon.permissionlib.annotation.PermissionSuccess;
 import com.simon.permissionlib.fragement.PermissionsFragment;
@@ -26,9 +25,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.simon.permissionlib.utils.PermissionUtils.getActivity;
+import static com.simon.permissionlib.utils.PermissionUtils.needRequestPermission;
 
 /**
- * description: 权限类重写，去除非必要静态方法
+ * description: 权限类重写，去除非必要静态方法,修改部分方法的访问权限，todo 待加入部分ui
  * author: Simon
  * created at 2017/7/20 下午3:14
  * 1.增加内部权限回调，用户无需自己写回调
@@ -37,44 +37,57 @@ import static com.simon.permissionlib.utils.PermissionUtils.getActivity;
  */
 
 public class PermissionHelper {
+
     //--基础必备数据--
-    private String[] mPermission;//请求的权限
-    private int mRequestCode = Integer.MIN_VALUE; //请求码
-    private Object mObject;//上下文环境，支持activity、fragement、v4.fragement
-    private PermissionsFragment permissionsFragment;//用于接收权限的fragement
+
+    //--tag--
     private static final String TAG = "PermissionHelper";
 
-    //--以requestCode为key--
-    private String hint = null;//再次申请的时候提示的内容
+    //--请求的权限集合--
+    private String[] mPermission;
+
+    //--请求码，用于标识请求操作--
+    private int mRequestCode;
+
+    //--上下文环境，支持activity、fragement、v4.fragement--
+    private Object mObject;
+
+    //--用于接收权限的fragement--
+    private PermissionsFragment permissionsFragment;
+
+    //--再次申请的时候提示的内容--
+    private String hint = null;
+
+    //--回调的监听集合--
     private List<Object> liseners = new ArrayList<>();//回调监听（不设置此处按照上下文环境回调，设置此处按照此处回调）
 
-    //保存上下文环境
+    //--保存上下文环境--
     private PermissionHelper(@NonNull Object context) {
         mObject = context;
     }
 
-    //传入activity
+    //--传入activity--
     public static PermissionHelper with(@NonNull Activity activity) {
         return new PermissionHelper(activity);
     }
 
-    //传入fragement
+    //--传入fragement--
     public static PermissionHelper with(@NonNull Fragment fragment) {
         return new PermissionHelper(fragment);
     }
 
-    //传入v4下的fragement
+    //--传入v4下的fragement--
     public static PermissionHelper with(@NonNull android.support.v4.app.Fragment fragment) {
         return new PermissionHelper(fragment);
     }
 
-    //传入所需要的权限
+    //--传入所需要的权限--
     public PermissionHelper permissions(String... permissions) {
         this.mPermission = permissions;
         return this;
     }
 
-    //传入请求code，用于匹配回调方法
+    //--传入请求code，用于匹配回调方法--
     public PermissionHelper requestCode(int code) {
         this.mRequestCode = code;
         return this;
@@ -109,7 +122,6 @@ public class PermissionHelper {
     /**
      * 权限请求方法
      */
-    @TargetApi(Build.VERSION_CODES.M)
     public void request() {
         requestPermissions(mRequestCode, mPermission);
     }
@@ -120,10 +132,9 @@ public class PermissionHelper {
      * @param requestCode --请求码
      * @param permissions --请求权限
      */
-    @TargetApi(Build.VERSION_CODES.M)
-    public void requestPermissions(final int requestCode, String[] permissions) {
+    private void requestPermissions(final int requestCode, String[] permissions) {
         //判断是否需要申请权限，不满足申请条件则直接回调成功  //sdk较小，没有传入所需权限-> 回调成功
-        if (!PermissionUtils.needRequestPermission() || permissions == null || permissions.length == 0) {
+        if (!needRequestPermission() || permissions == null || permissions.length == 0) {
             doExecuteSuccess(requestCode);
             return;
         }
@@ -166,8 +177,11 @@ public class PermissionHelper {
      * @param perms       --权限
      * @param requestCode --请求集合
      */
-    @TargetApi(Build.VERSION_CODES.M)
     private void executePermissionsRequest(@NonNull String[] perms, int requestCode) {
+        //检查是否达到申请权限的标准
+        if (!needRequestPermission()) {
+            return;
+        }
         //检查上下文
         checkType();
         //初始化fragement,如果有问题将抛出异常
@@ -182,8 +196,11 @@ public class PermissionHelper {
      * @param perm --权限
      * @return true表示需要，false 表示不需要
      */
-    @TargetApi(Build.VERSION_CODES.M)
     private boolean shouldShowRequestPermissionRationale(String perm) {
+        //检查是否达到申请权限的标准
+        if (!needRequestPermission()) {
+            return false;
+        }
         //检查上下文
         checkType();
         //获取fragement
@@ -267,7 +284,7 @@ public class PermissionHelper {
      * @param okListener --点击确定的时候回调
      */
     private void showMessageOKCancel(final int requestCode, final DialogInterface.OnClickListener okListener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(mObject));
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(mObject), android.R.style.Theme_Material_Light_Dialog_Alert);
         builder.setTitle("提示");
         builder.setMessage(getHintMessage());
 
@@ -301,7 +318,7 @@ public class PermissionHelper {
      */
     private String getHintMessage() {
         if (TextUtils.isEmpty(hint)) {
-            hint = "当前应用缺少必要权限,且在此之前您曾经拒绝过授权，为正常使用该应用，请允许打开对应权限。\n";
+            hint = "当前应用缺少必要权限！\n在此之前您曾拒绝过为此应用授权，为正常使用该应用，请允许打开对应权限。\n";
         }
         return hint;
     }
@@ -350,9 +367,9 @@ public class PermissionHelper {
      * @param requestCode --申请权限的requestCode
      */
     private void showMissingPermissionDialog(final int requestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(mObject));
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(mObject), android.R.style.Theme_Material_Light_Dialog_Alert);
         builder.setTitle("提示");
-        builder.setMessage("当前应用缺少必要权限，是否进行开启");
+        builder.setMessage("当前应用缺少必要权限，是否进入设置开启 ？");
 
         // 拒绝, 回调 权限申请失败
         builder.setNegativeButton("取消",

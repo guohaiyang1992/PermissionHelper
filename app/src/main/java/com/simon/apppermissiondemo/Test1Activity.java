@@ -28,8 +28,7 @@ public class Test1Activity extends Activity {
             public void onClick(View v) {
                 //请求电话权限
                 PermissionHelper.with(Test1Activity.this)
-                        .permissions(Manifest.permission.CALL_PHONE,
-                                Manifest.permission.SEND_SMS)
+                        .permissions(Manifest.permission.CALL_PHONE)
                         .requestCode(100)
                         .lisener(Test1Activity.this)
                         .request();
