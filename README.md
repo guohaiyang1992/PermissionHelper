@@ -1,7 +1,7 @@
 
 
 
-# PermissionHelper (v1.1)
+# PermissionHelper (v1.2)
 ## 简单高效的android 动态权限申请库（特点：苦口婆心式的引导+简单高效的使用）
 ---
 功能：
@@ -17,6 +17,7 @@
  - 锤子系统改写了android api的权限请求，无论你是否具有权限，返回的都是有权限，当你真正使用权限时系统会弹出对应授权窗口。
  - 其他的三星、华为 都是完美兼容，只要是系统严格android api进行的就是支持的，除非系统自己写一套，类似锤子、小米。
 
+ 
 ---
 使用方法:
 
@@ -111,6 +112,10 @@ lisener(Object... lisener) //监听的类（必填）
 
 ```
 dependencies {
-      compile 'com.github.guohaiyang1992:PermissionHelper:1.1'
+      compile 'com.github.guohaiyang1992:PermissionHelper:1.2'
 	}
 ```
+
+---
+特别鸣谢：
+  感谢QQ群中的Honor给予提出的比较中肯的意见，在此特别鸣谢。
